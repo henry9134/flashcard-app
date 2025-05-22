@@ -7,12 +7,11 @@ export default function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Load session on startup
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
+    // Load session on startup (v1 uses .session())
+    const session = supabase.auth.session();
+    setUser(session?.user ?? null);
 
-    // Listen for auth changes
+    // Listen for auth changes (v1 style)
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
